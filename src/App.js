@@ -1,32 +1,24 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Board, Row, Square } from "./styled"
+import { Board, Row, Square, Title } from "./styled"
+import strawberryImage from './static/strawberry_cake.png'
+import chocolateImage from './static/chocolateCake.png'
+import cupcakeX from './static/cupcake1.png'
+import cupcakeO from './static/cupcake2.png'
+
+
 
 function App() {
   const [board, setBoard] = useState([['', '', ''],
   ['', '', ''],
   ['', '', '']])
-  const [player, setPlayer] = useState('X')
+  const [player, setPlayer] = useState(cupcakeX)
   const [win, setWin] = useState(false)
+  const [tie, setTie] = useState(false)
 
 
-  function handleBoardClick(player, row, column) {
-    const newBoard = board
-    newBoard[row][column] = player;
-    setBoard(newBoard)
 
-    if (player === 'X') {
-      setPlayer('O')
-    } else {
-      setPlayer('X')
-    }
-
-    // const diagonalLeft = new Set(board[0][0], board[1][1], board[2[2]])
-    // const diagonalRight = new Set(board[0][2], board[1][1], board[2[0]])
-    // console.log('diagonalLeft', diagonalLeft)
-    // console.log('diagonalRight', diagonalRight)
-
-
+  function winner(board) {
     const column1 = new Set()
     const column2 = new Set()
     const column3 = new Set()
@@ -41,10 +33,10 @@ function App() {
 
       row.forEach((position, positionIndex) => {
         if (rowIndex === positionIndex) {
-          diagonalLeft.add(row[positionIndex])
+          diagonalLeft.add(position)
         }
-        if ((rowIndex - positionIndex) === row.length - 1) {
-          diagonalRight.add(row[positionIndex])
+        if ((rowIndex + positionIndex) === row.length - 1) {
+          diagonalRight.add(position)
         }
       })
 
@@ -55,6 +47,7 @@ function App() {
     })
 
     if (column1.size === 1 && !column1.has('')) {
+      console.log('col1 is a winner')
       setWin(true)
     }
     if (column2.size === 1 && !column2.has('')) {
@@ -69,43 +62,72 @@ function App() {
     if (diagonalRight.size === 1 && !diagonalRight.has('')) {
       setWin(true)
     }
-
-
-
-    // board.forEach((row) => {
-    //   row.forEach((items) => {
-
-    //   })
-    // })
   }
 
 
-  console.log(win)
+  function handleBoardClick(player, row, column) {
+    const newBoard = board
 
+    if (newBoard[row][column] !== '') {
+      return
+    }
+
+    if (newBoard[row][column] === '') {
+      newBoard[row][column] = player;
+    }
+    setBoard(newBoard)
+
+    if (player === cupcakeX) {
+      setPlayer(cupcakeO)
+    } else {
+      setPlayer(cupcakeX)
+    }
+    winner(newBoard);
+    console.log('win', win)
+
+    const isTie = checkTie(newBoard, win)
+    console.log('isTie', isTie)
+
+    if (isTie) {
+      setTie(true)
+    }
+  }
+
+  function checkTie(board, win) {
+    const allPositions = new Set()
+
+    board.forEach((row) => {
+      row.forEach((item) => {
+        allPositions.add(item)
+      })
+    })
+
+    if (!allPositions.has('') && !win) {
+      console.log('win', win)
+      return true
+    }
+    return false
+  }
 
 
 
   return (
     <div>
-      <h1>Hello World</h1>
+      <Title>CAKE-TAC-TOE</Title>
+      {win && <h2>You  win!</h2>}
+      {tie && !win && <h2>It's a tie</h2>}
       <Board>
-        <Row>
-          <Square onClick={() => handleBoardClick(player, 0, 0)}>{board[0][0]}</Square>
-          <Square onClick={() => handleBoardClick(player, 0, 1)}>{board[0][1]}</Square>
-          <Square onClick={() => handleBoardClick(player, 0, 2)}>{board[0][2]}</Square>
-        </Row>
-        <Row>
-          <Square onClick={() => handleBoardClick(player, 1, 0)}>{board[1][0]}</Square>
-          <Square onClick={() => handleBoardClick(player, 1, 1)}>{board[1][1]}</Square>
-          <Square onClick={() => handleBoardClick(player, 1, 2)}>{board[1][2]}</Square>
-        </Row>
-        <Row>
-          <Square onClick={() => handleBoardClick(player, 2, 0)}>{board[2][0]}</Square>
-          <Square onClick={() => handleBoardClick(player, 2, 1)}>{board[2][1]}</Square>
-          <Square onClick={() => handleBoardClick(player, 2, 2)}>{board[2][2]}</Square>
-        </Row>
+        <Square onClick={() => handleBoardClick(player, 0, 0)}>{<img src={board[0][0]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 0, 1)}>{<img src={board[0][1]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 0, 2)}>{<img src={board[0][2]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 1, 0)}>{<img src={board[1][0]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 1, 1)}>{<img src={board[1][1]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 1, 2)}>{<img src={board[1][2]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 2, 0)}>{<img src={board[2][0]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 2, 1)}>{<img src={board[2][1]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
+        <Square onClick={() => handleBoardClick(player, 2, 2)}>{<img src={board[2][2]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
       </Board>
-    </div>
+    </div >
   );
 }
 

@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Cupcake';
+  src: local('Cupcake'), url(./Fonts/kr-cupcake-font/KrCupcake-vvrZ.ttf) format('truetype');
+}
