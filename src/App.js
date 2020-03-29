@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Board, Square, Title, Button, WinnerPic } from "./styled"
+import { Board, Square, Title, Button, WinnerPic, Winner } from "./styled"
 import cupcakeX from './static/cupcake1.png'
 import cupcakeO from './static/cupcake2.png'
 import winnerCupcake1 from './static/eatingCat.png'
+import winnerCupcake2 from './static/eatingCat2.png'
+import sadCat from './static/sadCat.gif'
 
 
 
@@ -14,9 +16,6 @@ function App() {
   const [player, setPlayer] = useState(cupcakeX)
   const [win, setWin] = useState(false)
   const [tie, setTie] = useState(false)
-
-
-
 
 
   function winner(board) {
@@ -114,6 +113,19 @@ function App() {
     setBoard([['', '', ''],
     ['', '', ''],
     ['', '', '']])
+    setTie(false)
+    setWin(false)
+  }
+
+  let winnerPlayer = winnerCupcake1
+  let printWinner = ''
+
+  if (player === cupcakeX) {
+    winnerPlayer = winnerCupcake1
+    printWinner = 'Chocolate Strawberry Cupcake Wins!!!'
+  } else {
+    winnerPlayer = winnerCupcake2
+    printWinner = 'Mocha Creme Cupcake Wins!!!'
   }
 
 
@@ -121,9 +133,9 @@ function App() {
   return (
     <div>
       <Title>CAKE-TAC-TOE</Title>
-
-      {win && <WinnerPic><img src={winnerCupcake1} width="300" /></WinnerPic>}
-      {tie && !win && <WinnerPic>Tie</WinnerPic>}
+      {win && <Winner></Winner>}
+      {win && <WinnerPic onClick={handleReset}><img src={winnerPlayer} width="350" /></WinnerPic>}
+      {tie && !win && <WinnerPic onClick={handleReset}><img src={sadCat} width="350" /></WinnerPic>}
       <Board>
         <Square onClick={() => handleBoardClick(player, 0, 0)}>{<img src={board[0][0]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
         <Square onClick={() => handleBoardClick(player, 0, 1)}>{<img src={board[0][1]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
@@ -135,7 +147,9 @@ function App() {
         <Square onClick={() => handleBoardClick(player, 2, 1)}>{<img src={board[2][1]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
         <Square onClick={() => handleBoardClick(player, 2, 2)}>{<img src={board[2][2]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
       </Board>
-      <Button onClick={handleReset}>Rest Game!</Button>
+      {win && <Winner>{printWinner}</Winner>}
+      {tie && !win && <Winner>Tie! No cake for kitty</Winner>}
+      <Button onClick={handleReset}>Reset Game!</Button>
     </div >
   );
 }
