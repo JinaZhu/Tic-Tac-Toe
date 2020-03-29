@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Board, Row, Square, Title } from "./styled"
-import strawberryImage from './static/strawberry_cake.png'
-import chocolateImage from './static/chocolateCake.png'
+import { Board, Square, Title, Button, WinnerPic } from "./styled"
 import cupcakeX from './static/cupcake1.png'
 import cupcakeO from './static/cupcake2.png'
+import winnerCupcake1 from './static/eatingCat.png'
 
 
 
@@ -15,6 +14,8 @@ function App() {
   const [player, setPlayer] = useState(cupcakeX)
   const [win, setWin] = useState(false)
   const [tie, setTie] = useState(false)
+
+
 
 
 
@@ -109,13 +110,20 @@ function App() {
     return false
   }
 
+  function handleReset() {
+    setBoard([['', '', ''],
+    ['', '', ''],
+    ['', '', '']])
+  }
+
 
 
   return (
     <div>
       <Title>CAKE-TAC-TOE</Title>
-      {win && <h2>You  win!</h2>}
-      {tie && !win && <h2>It's a tie</h2>}
+
+      {win && <WinnerPic><img src={winnerCupcake1} width="300" /></WinnerPic>}
+      {tie && !win && <WinnerPic>Tie</WinnerPic>}
       <Board>
         <Square onClick={() => handleBoardClick(player, 0, 0)}>{<img src={board[0][0]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
         <Square onClick={() => handleBoardClick(player, 0, 1)}>{<img src={board[0][1]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
@@ -127,6 +135,7 @@ function App() {
         <Square onClick={() => handleBoardClick(player, 2, 1)}>{<img src={board[2][1]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
         <Square onClick={() => handleBoardClick(player, 2, 2)}>{<img src={board[2][2]} width='90' style={{ display: "block", margin: "auto", marginTop: "15px" }} />}</Square>
       </Board>
+      <Button onClick={handleReset}>Rest Game!</Button>
     </div >
   );
 }
