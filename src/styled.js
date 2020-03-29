@@ -38,6 +38,12 @@ export const Button = styled.button`
     display: block; 
     margin: 10px auto; 
 `
+export const Winner = styled.h2`
+    text-align: center;
+    font-family: Comic Sans MS; 
+    color: #FDAFAB;
+    font-weight: bold;
+`
 
 export const WinnerPic = styled.div`
     width: 350px;
